@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "Simple Page Runner",
+  "version": "1.0",
+  "description": "A simple demo extension that runs on every page.",
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "host_permissions": [
+      "http://localhost:8888/*"
+    ],
+    "permissions": [
+        "tabs"
+      ],
+    "background": {
+      "service_worker": "background.js"
+    }
+}
