@@ -1,12 +1,14 @@
 // This runs as soon as the page DOM is ready on any matching website.
-console.log("Log Extension: Content script loaded on this page.");
+console.log("🙈");
 
 // Create a log object.
 const logPayload = {
-  type: "pageLoadLog",
+  date: new Date().toLocaleDateString(),
+  time: new Date().toLocaleTimeString(),
+  type: 1,
   url: window.location.href,
   title: document.title,
-  timestamp: new Date().toISOString()
+  timestamp: new Date().toLocaleDateString()
 };
 
 // Send this data to the background script for logging.

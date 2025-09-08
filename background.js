@@ -14,10 +14,10 @@ async function logToServer(payload) {
     });
 
     const data = await response.json();
-    console.log("Server response:", data);
+    // console.log("Server response:", data);
   } catch (error) {
     // This will catch errors if the server is not running.
-    console.error("Error logging to server:", error.message);
+    // console.error("Error logging to server:", error.message);
   }
 }
 
@@ -30,7 +30,7 @@ async function logToServer(payload) {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   // Check that this is the message we expect
   if (message.action === "logData") {
-    console.log("Logging from CONTENT SCRIPT (Page Load):", message.data.url);
+    // console.log("Logging from CONTENT SCRIPT (Page Load):", message.data.url);
     logToServer(message.data); // Use our reusable function
 
     // Return true to indicate that this will respond asynchronously.
@@ -55,24 +55,26 @@ chrome.tabs.onActivated.addListener(async (activeInfo) => {
     const tab = await chrome.tabs.get(tabId);
 
     // We only want to log real webpages, not internal "chrome://" pages or blank new tabs
-    if (tab && tab.url && (tab.url.startsWith("http:") || tab.url.startsWith("https:")) ) {
+    // if (tab && tab.url && (tab.url.startsWith("http:") || tab.url.startsWith("https:")) ) {
 
       const logPayload = {
-        type: "tabActivatedLog",
+        date: new Date().toLocaleDateString(),
+        time: new Date().toLocaleTimeString(),
+        type: 0,
         url: tab.url,
         title: tab.title,
         timestamp: new Date().toISOString()
       };
 
-      console.log("Logging from TABS API (Tab Switch):", logPayload.url);
+      // console.log("Logging from TABS API (Tab Switch):", logPayload.url);
       logToServer(logPayload); // Use our same reusable function
 
-    } else {
-      console.log("Ignoring tab switch to non-webpage:", tab.url || 'N/A');
-    }
+    // } else {
+    //   // console.log("Ignoring tab switch to non-webpage:", tab.url || 'N/A');
+    // }
   } catch (error) {
     // This often fails harmlessly for protected system pages (like chrome://extensions)
     // where we aren't allowed to get the tab details. We can safely ignore this.
-    console.warn(`Could not get tab info: ${error.message}`);
+    // console.warn(`Could not get tab info: ${error.message}`);
   }
 });
