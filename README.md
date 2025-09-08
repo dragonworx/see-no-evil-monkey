@@ -97,7 +97,7 @@ pm2 save
 
 ##### 2. Configure auto-start on Windows
 ```bash
-pm2-startup install
+npx pm2-windows-startup install
 pm2 save
 ```
 
