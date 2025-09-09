@@ -8,7 +8,7 @@ const PORT = 8888;
 
 // CSV file configuration
 const CSV_FILE = path.join(__dirname, 'log.csv');
-const CSV_HEADERS = 'timestamp,type,title,url';
+const CSV_HEADERS = 'date,time,type,title,url';
 
 // --- Helper Functions ---
 
@@ -69,6 +69,126 @@ app.use(cors());
 app.use(express.json());
 
 // --- Routes ---
+
+// GET endpoint to view logs as HTML table
+app.get('/', (req, res) => {
+  try {
+    // Check if CSV file exists
+    if (!fs.existsSync(CSV_FILE)) {
+      res.send('<h1>No logs yet</h1><p>The log file has not been created.</p>');
+      return;
+    }
+
+    // Read the CSV file
+    const csvContent = fs.readFileSync(CSV_FILE, 'utf8');
+    const lines = csvContent.trim().split('\n');
+
+    // Parse CSV data - handle both old and new header formats
+    let headers;
+    const firstLine = lines[0];
+    if (firstLine.startsWith('timestamp,')) {
+      // Old format: timestamp contains both date and time
+      headers = ['date', 'time', 'type', 'title', 'url'];
+    } else {
+      headers = firstLine.split(',');
+    }
+    const rows = lines.slice(1);
+
+    // Build HTML response
+    let html = `
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Activity Logs</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 5px;
+      background-color: #f5f5f5;
+      font-size: 12px;
+    }
+    h1 {
+      color: #333;
+      margin: 5px 0;
+      font-size: 18px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      background-color: white;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+    th {
+      background-color: #4CAF50;
+      color: white;
+      padding: 3px 5px;
+      text-align: left;
+      border: 1px solid #ddd;
+      font-size: 11px;
+    }
+    td {
+      padding: 2px 5px;
+      border: 1px solid #ddd;
+      font-size: 11px;
+    }
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+    tr:hover {
+      background-color: #e8f5e9;
+    }
+    .refresh-note {
+      margin-top: 5px;
+      color: #666;
+      font-style: italic;
+      font-size: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Activity Logs</h1>
+  <table>
+    <thead>
+      <tr>`;
+
+    // Add table headers
+    headers.forEach(header => {
+      html += `<th>${header}</th>`;
+    });
+
+    html += `
+      </tr>
+    </thead>
+    <tbody>`;
+
+    // Add table rows
+    rows.forEach(row => {
+      if (row.trim()) {
+        // Simple CSV parsing (handles basic cases)
+        const values = row.match(/(".*?"|[^,]+)(?=\s*,|\s*$)/g) || [];
+        html += '<tr>';
+        values.forEach(value => {
+          // Remove surrounding quotes if present
+          const cleanValue = value.replace(/^"|"$/g, '').replace(/""/g, '"');
+          html += `<td>${cleanValue}</td>`;
+        });
+        html += '</tr>';
+      }
+    });
+
+    html += `
+    </tbody>
+  </table>
+  <p class="refresh-note">Refresh the page to see the latest data.</p>
+</body>
+</html>`;
+
+    res.send(html);
+  } catch (error) {
+    console.error('❌ Error reading CSV:', error.message);
+    res.status(500).send(`<h1>Error</h1><p>Failed to read log file: ${error.message}</p>`);
+  }
+});
 
 // Our main logging endpoint
 app.post('/log', (req, res) => {

@@ -1,0 +1,12 @@
+timestamp,type,title,url
+09/09/2025,17:25:04,0,Extensions,chrome://extensions/
+09/09/2025,17:25:16,0,Amazon Web Services Sign-In,https://signin.aws.amazon.com/signin?redirect_uri=https%3A%2F%2Fap-southeast-2.console.aws.amazon.com%2Fec2%2Fhome%3FhashArgs%3D%2523Instances%253Av%253D3%253B%2524case%253Dtags%253Atrue%25255C%252Cclient%253Afalse%253B%2524regex%253Dtags%253Afalse%25255C%252Cclient%253Afalse%26isauthcode%3Dtrue%26oauthStart%3D1757401835308%26region%3Dap-southeast-2%26state%3DhashArgsFromTB_ap-southeast-2_76d5f14fa26c6612&client_id=arn%3Aaws%3Asignin%3A%3A%3Aconsole%2Fec2-tb&forceMobileApp=0&code_challenge=0861WcpcO9YkkPIN3VQcpJgrvz6l5uXlSd6YvxBJxzE&code_challenge_method=SHA-256
+09/09/2025,17:25:20,0,New tab,
+09/09/2025,17:25:23,1,Fantoccini 3D,http://localhost:3000/
+09/09/2025,17:25:26,1,Activity Logs,http://localhost:8888/log
+09/09/2025,17:28:24,1,Activity Logs,http://localhost:8888/
+09/09/2025,17:28:26,1,Activity Logs,http://localhost:8888/
+09/09/2025,17:28:27,1,Activity Logs,http://localhost:8888/
+09/09/2025,17:30:00,1,Activity Logs,http://localhost:8888/
+09/09/2025,17:33:05,1,Activity Logs,http://localhost:8888/
+09/09/2025,17:33:37,1,Activity Logs,http://localhost:8888/
